@@ -1,0 +1,49 @@
+
+
+<!doctype html>
+<html>
+  <head>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+
+    <script>
+   let kaart, abikiht;
+
+	   function vajutus1(){
+	      fetch("https://www.tlu.ee/~jaagup/andmed/muu/kohad.txt").
+		     then(andmed => andmed.text()).then(kuvaTekst);
+	   }
+	   
+	   function vajutus2(){
+	      fetch("https://www.tlu.ee/~jaagup/andmed/muu/5klass.txt").
+		     then(andmed => andmed.text()).then(kuvaTekst);
+	   }
+	   
+	   function kuvaTekst(t){
+	      vastus1.innerText=t;
+		  if(t.startsWith("koht")){
+		     L.marker([59.439, 24.773]).addTo(abikiht);
+		  } else {
+		     abikiht.clearLayers();
+		  }
+	   }
+	   
+   function algus(){
+    kaart = L.map('kaardikiht').setView([59.439, 24.773], 13);
+      new L.TileLayer(
+  'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA', {
+	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
+	  tms: true,
+    }).addTo(kaart);
+    abikiht=L.layerGroup()
+	abikiht.addTo(kaart);
+   }
+	</script>
+  </head>
+  <body onload="algus()">
+     <div id="kaardikiht" style="width: 800px; height: 400px"></div>
+     <input type="button" onclick="vajutus1()" value="kohad" />
+     <input type="button" onclick="vajutus2()" value="lapsed" />
+	 <div id="vastus1">Vastuse koht</div>
+  </body>
+</html>
